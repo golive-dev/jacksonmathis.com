@@ -1,5 +1,5 @@
 <script lang="ts">
-	let age = $state(15);
+	let age = $state(14);
 	let showFact = $state(false);
 	let factIndex = $state(0);
 
@@ -7,7 +7,7 @@
 		'I just started learning to code.',
 		'My dad builds software for a living.',
 		'I once ate an entire pizza by myself. No regrets.',
-		'Python was my first language (import antigravity).',
+		'Football is life.',
 		'I think the terminal is cooler than any app.',
 		'This website is my first real project.',
 	];
@@ -67,7 +67,7 @@
 		<div class="bg-dark-card border border-dark-border rounded-lg p-6">
 			<h2 class="font-mono text-neon-purple text-sm mb-4">// currently into</h2>
 			<div class="flex flex-wrap gap-2">
-				{#each ['python', 'web dev', 'music', 'gaming', 'the internet', 'building stuff'] as thing}
+				{#each ['football', 'web dev', 'music', 'gaming', 'the internet', 'building stuff'] as thing}
 					<span class="font-mono text-xs border border-dark-border text-gray-400 px-3 py-1 rounded-full hover:text-neon-purple hover:border-neon-purple/30 transition-all duration-200">
 						{thing}
 					</span>

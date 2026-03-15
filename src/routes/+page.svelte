@@ -107,8 +107,8 @@
 				<p class="text-neon-green">jackson.mathis</p>
 				<p class="text-gray-500 mt-2">$ cat interests.txt</p>
 				<p class="text-gray-300">code, music, games, the internet</p>
-				<p class="text-gray-500 mt-2">$ python -c "import antigravity"</p>
-				<p class="text-neon-pink">🚀 whoooosh</p>
+						<p class="text-gray-500 mt-2">$ echo "let's go"</p>
+						<p class="text-neon-pink">🏈 let's go</p>
 				<p class="text-gray-500 mt-2">$ <span class="border-r-2 border-neon-green animate-[blink-caret_1s_step-end_infinite]">&nbsp;</span></p>
 			</div>
 		</div>
