@@ -133,6 +133,9 @@
 
 		<!-- Nav links -->
 		<nav class="mt-16 flex flex-wrap justify-center gap-4 {mounted ? 'opacity-100' : 'opacity-0'} transition-all duration-1000 delay-700">
+			<a href="/games" class="font-mono text-sm text-gray-400 hover:text-neon-yellow border-b border-transparent hover:border-neon-yellow/50 pb-0.5 transition-all duration-200">
+				/games
+			</a>
 			<a href="/projects" class="font-mono text-sm text-gray-400 hover:text-neon-green border-b border-transparent hover:border-neon-green/50 pb-0.5 transition-all duration-200">
 				/projects
 			</a>
