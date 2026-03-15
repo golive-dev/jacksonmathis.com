@@ -11,7 +11,7 @@
 
 	const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
 
-	const skills = ['Python', 'Svelte', 'TypeScript', 'HTML/CSS', 'curiosity', 'building things'];
+	const skills = ['gaming', 'music', 'code', 'the internet', 'building things'];
 	let currentSkill = $state(0);
 
 	onMount(() => {
