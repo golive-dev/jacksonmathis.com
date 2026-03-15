@@ -11,5 +11,3 @@
 <div class="scanlines min-h-screen">
 	{@render children()}
 </div>
-
-{@render children()}
