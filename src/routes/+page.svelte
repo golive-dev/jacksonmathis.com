@@ -163,7 +163,7 @@
 		<!-- Footer -->
 		<footer class="mt-auto pt-20 pb-8 text-center {mounted ? 'opacity-100' : 'opacity-0'} transition-all duration-1000 delay-1000">
 			<p class="font-mono text-xs text-gray-700">
-				built with <span class="text-neon-green">svelte</span> · deployed on the internet · © {new Date().getFullYear()}
+				© {new Date().getFullYear()} jackson mathis
 			</p>
 		</footer>
 	</main>
