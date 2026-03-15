@@ -1,0 +1,92 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-neon-green: #39ff14;
+  --color-neon-blue: #00f0ff;
+  --color-neon-pink: #ff2d95;
+  --color-neon-purple: #b026ff;
+  --color-neon-yellow: #fff01f;
+  --color-dark: #0a0a0f;
+  --color-dark-card: #12121a;
+  --color-dark-border: #1e1e2e;
+  --font-family-display: 'Space Mono', monospace;
+  --font-family-body: 'Inter', system-ui, sans-serif;
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/spacemono/v13/i7dPIFZifjKcF5UAWdDRYEF8RQ.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/spacemono/v13/i7dMIFZifjKcF5UAWdDRaPpZUFWaHg.woff2) format('woff2');
+}
+
+html {
+  background-color: var(--color-dark);
+  color: #e0e0e0;
+  font-family: var(--font-family-body);
+}
+
+::selection {
+  background-color: var(--color-neon-green);
+  color: #000;
+}
+
+/* Glow utility */
+.glow-green { text-shadow: 0 0 10px var(--color-neon-green), 0 0 40px var(--color-neon-green); }
+.glow-blue { text-shadow: 0 0 10px var(--color-neon-blue), 0 0 40px var(--color-neon-blue); }
+.glow-pink { text-shadow: 0 0 10px var(--color-neon-pink), 0 0 40px var(--color-neon-pink); }
+
+/* Scanline overlay */
+.scanlines::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 99;
+}
+
+/* Flicker animation */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.3; }
+  94% { opacity: 1; }
+  96% { opacity: 0.5; }
+  97% { opacity: 1; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--color-neon-green); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
