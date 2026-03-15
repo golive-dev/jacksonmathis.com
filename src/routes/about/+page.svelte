@@ -67,7 +67,7 @@
 		<div class="bg-dark-card border border-dark-border rounded-lg p-6">
 			<h2 class="font-mono text-neon-purple text-sm mb-4">// currently into</h2>
 			<div class="flex flex-wrap gap-2">
-				{#each ['football', 'web dev', 'music', 'gaming', 'the internet', 'building stuff'] as thing}
+				{#each ['football', 'web dev', 'music', 'gaming', 'airplanes', 'the internet', 'building stuff'] as thing}
 					<span class="font-mono text-xs border border-dark-border text-gray-400 px-3 py-1 rounded-full hover:text-neon-purple hover:border-neon-purple/30 transition-all duration-200">
 						{thing}
 					</span>
