@@ -38,7 +38,7 @@
 </script>
 
 <div class="min-h-screen px-6 py-16 max-w-3xl mx-auto">
-	<a href="/v2" class="text-xs transition-colors duration-200" style="color: var(--av-amber-dim);"
+	<a href="/" class="text-xs transition-colors duration-200" style="color: var(--av-amber-dim);"
 		onmouseenter={(e) => e.currentTarget.style.color = 'var(--av-amber)'}
 		onmouseleave={(e) => e.currentTarget.style.color = 'var(--av-amber-dim)'}>
 		← RETURN TO COCKPIT

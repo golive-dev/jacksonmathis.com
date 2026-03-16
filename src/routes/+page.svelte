@@ -2,175 +2,212 @@
 	import { onMount } from 'svelte';
 
 	let mounted = $state(false);
-	let clickCount = $state(0);
-	let konamiProgress = $state(0);
-	let showSecret = $state(false);
-	let mouseX = $state(0);
-	let mouseY = $state(0);
-	let showTrail = $state(false);
+	let altitude = $state(0);
+	let heading = $state(0);
+	let airspeed = $state(0);
+	let radarAngle = $state(0);
+	let localTime = $state('--:--:--');
 
-	const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+	const callsigns = ['MAVERICK', 'GHOST RIDER', 'VIPER', 'PHOENIX', 'ROOSTER'];
+	let callsignIdx = $state(0);
 
-	const skills = ['gaming', 'music', 'football', 'airplanes', 'the internet', 'building things'];
-	let currentSkill = $state(0);
+	const interests = ['football', 'gaming', 'music', 'airplanes', 'building things', 'the internet'];
+	let interestIdx = $state(0);
 
 	onMount(() => {
 		mounted = true;
-		const interval = setInterval(() => {
-			currentSkill = (currentSkill + 1) % skills.length;
+
+		const climbInterval = setInterval(() => {
+			if (altitude < 35000) altitude += Math.floor(Math.random() * 800 + 200);
+			else clearInterval(climbInterval);
+		}, 100);
+
+		const headingInterval = setInterval(() => {
+			heading = (heading + 1) % 360;
+		}, 50);
+
+		const speedInterval = setInterval(() => {
+			if (airspeed < 485) airspeed += Math.floor(Math.random() * 20 + 5);
+			else clearInterval(speedInterval);
+		}, 80);
+
+		const radarInterval = setInterval(() => {
+			radarAngle = (radarAngle + 3) % 360;
+		}, 30);
+
+		const clockInterval = setInterval(() => {
+			const now = new Date();
+			localTime = now.toTimeString().split(' ')[0];
+		}, 1000);
+
+		const callsignInterval = setInterval(() => {
+			callsignIdx = (callsignIdx + 1) % callsigns.length;
+		}, 3000);
+
+		const interestInterval = setInterval(() => {
+			interestIdx = (interestIdx + 1) % interests.length;
 		}, 2000);
 
-		const handleKey = (e: KeyboardEvent) => {
-			if (e.key === konamiCode[konamiProgress]) {
-				konamiProgress++;
-				if (konamiProgress === konamiCode.length) {
-					showSecret = true;
-					konamiProgress = 0;
-				}
-			} else {
-				konamiProgress = 0;
-			}
-		};
-
-		window.addEventListener('keydown', handleKey);
 		return () => {
-			clearInterval(interval);
-			window.removeEventListener('keydown', handleKey);
+			clearInterval(climbInterval);
+			clearInterval(headingInterval);
+			clearInterval(speedInterval);
+			clearInterval(radarInterval);
+			clearInterval(clockInterval);
+			clearInterval(callsignInterval);
+			clearInterval(interestInterval);
 		};
 	});
 
-	function handleClick() {
-		clickCount++;
-	}
-
-	function handleMouseMove(e: MouseEvent) {
-		mouseX = e.clientX;
-		mouseY = e.clientY;
-	}
-
-	const clickMessages: Record<number, string> = {
-		1: 'nice.',
-		5: 'okay you like clicking.',
-		10: 'seriously?',
-		25: 'you have commitment issues... in a good way.',
-		50: 'you found dedication.',
-		100: '🏆 you are the click champion.',
-		200: 'go outside.',
-	};
-
-	const clickMessage = $derived(
-		Object.entries(clickMessages)
-			.reverse()
-			.find(([threshold]) => clickCount >= Number(threshold))?.[1] ?? ''
+	const headingLetter = $derived(
+		heading < 23 ? 'N' : heading < 68 ? 'NE' : heading < 113 ? 'E' :
+		heading < 158 ? 'SE' : heading < 203 ? 'S' : heading < 248 ? 'SW' :
+		heading < 293 ? 'W' : heading < 338 ? 'NW' : 'N'
 	);
 </script>
 
-<div class="relative min-h-screen overflow-hidden" onmousemove={handleMouseMove}>
-	<!-- Ambient background grid -->
-	<div class="pointer-events-none fixed inset-0 opacity-[0.03]"
-		style="background-image: linear-gradient(rgba(57,255,20,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,20,.5) 1px, transparent 1px); background-size: 50px 50px;">
-	</div>
-
-	<!-- Cursor glow -->
-	<div class="pointer-events-none fixed w-64 h-64 rounded-full opacity-10 transition-all duration-300 ease-out -translate-x-1/2 -translate-y-1/2"
-		style="left: {mouseX}px; top: {mouseY}px; background: radial-gradient(circle, var(--color-neon-green), transparent 70%);">
-	</div>
-
-	<main class="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-20">
-		<!-- Hero -->
-		<div class="text-center space-y-6 {mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} transition-all duration-1000 ease-out">
-			
-			<div class="inline-block mb-4">
-				<span class="text-xs font-mono tracking-[0.3em] uppercase text-neon-green/60 border border-neon-green/20 px-4 py-1.5 rounded-full">
-					v1.0.0 — online
-				</span>
+<div class="relative min-h-screen overflow-hidden">
+	<!-- Stars background -->
+	<div class="pointer-events-none fixed inset-0">
+		{#each Array(40) as _, i}
+			<div class="absolute rounded-full bg-white"
+				style="width: {1 + Math.random() * 2}px; height: {1 + Math.random() * 2}px;
+					   left: {Math.random() * 100}%; top: {Math.random() * 60}%;
+					   opacity: {0.2 + Math.random() * 0.5};
+					   animation: blink-slow {2 + Math.random() * 4}s ease-in-out infinite {Math.random() * 3}s;">
 			</div>
+		{/each}
+	</div>
 
-			<h1 class="font-[family-name:var(--font-family-display)] text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
-				<span class="text-white">Jackson</span>
-				<span class="text-neon-green glow-green"> Mathis</span>
+	<!-- Horizon line -->
+	<div class="pointer-events-none fixed left-0 right-0 top-[55%] h-px opacity-20"
+		style="background: linear-gradient(90deg, transparent, var(--av-amber), transparent);
+			   animation: horizon-drift 8s ease-in-out infinite;">
+	</div>
+
+	<main class="relative z-10 px-6 py-16 max-w-4xl mx-auto">
+
+		<!-- Top bar: flight info strip -->
+		<div class="flex items-center justify-between text-xs mb-12 opacity-60"
+			style="animation: altitude-rise 1s ease-out;">
+			<span style="color: var(--av-amber);">FLT JM-001</span>
+			<span style="color: var(--av-green);">ZULU {localTime}</span>
+			<span style="color: var(--av-amber);">CALLSIGN: {callsigns[callsignIdx]}</span>
+		</div>
+
+		<!-- HERO: Name as flight designator -->
+		<div class="text-center mb-16 {mounted ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000"
+			style="animation: altitude-rise 0.8s ease-out;">
+
+			<p class="text-xs tracking-[0.5em] uppercase mb-6" style="color: var(--av-amber-dim);">
+				▸ pilot profile loaded ▸
+			</p>
+
+			<h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-4"
+				style="font-family: 'Orbitron', sans-serif;">
+				<span class="text-white">JACKSON</span><br />
+				<span class="glow-amber" style="color: var(--av-amber);">MATHIS</span>
 			</h1>
 
-			<p class="text-lg md:text-xl text-gray-400 max-w-lg mx-auto font-mono">
-				into <span class="text-neon-blue glow-blue transition-all duration-500">{skills[currentSkill]}</span>
+			<p class="text-lg mt-6" style="color: var(--av-white); opacity: 0.6;">
+				into
+				<span class="glow-amber transition-all duration-500" style="color: var(--av-amber);">
+					{interests[interestIdx]}
+				</span>
 			</p>
+		</div>
 
-			<!-- Terminal-style block -->
-			<div class="mt-10 bg-dark-card border border-dark-border rounded-lg p-5 max-w-md mx-auto text-left font-mono text-sm">
-				<div class="flex items-center gap-2 mb-3">
-					<div class="w-3 h-3 rounded-full bg-red-500/80"></div>
-					<div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-					<div class="w-3 h-3 rounded-full bg-green-500/80"></div>
-					<span class="text-gray-600 text-xs ml-2">jackson@earth ~ %</span>
-				</div>
-				<p class="text-gray-500">$ whoami</p>
-				<p class="text-neon-green">jackson.mathis</p>
-				<p class="text-gray-500 mt-2">$ cat interests.txt</p>
-				<p class="text-gray-300">code, music, games, the internet</p>
-						<p class="text-gray-500 mt-2">$ echo "let's go"</p>
-						<p class="text-neon-pink">🏈 let's go</p>
-				<p class="text-gray-500 mt-2">$ <span class="border-r-2 border-neon-green animate-[blink-caret_1s_step-end_infinite]">&nbsp;</span></p>
+		<!-- Instrument Panel Row -->
+		<div class="grid grid-cols-3 gap-4 mb-12" style="animation: altitude-rise 1.2s ease-out;">
+
+			<!-- Altimeter -->
+			<div class="instrument-panel p-5 text-center">
+				<p class="text-[10px] tracking-widest uppercase mb-2" style="color: var(--av-amber-dim);">altitude</p>
+				<p class="text-3xl font-bold tabular-nums" style="color: var(--av-green); font-family: 'Orbitron', sans-serif;">
+					{altitude.toLocaleString()}
+				</p>
+				<p class="text-[10px] mt-1" style="color: var(--av-green-dim);">FT MSL</p>
+			</div>
+
+			<!-- Heading -->
+			<div class="instrument-panel p-5 text-center">
+				<p class="text-[10px] tracking-widest uppercase mb-2" style="color: var(--av-amber-dim);">heading</p>
+				<p class="text-3xl font-bold tabular-nums" style="color: var(--av-amber); font-family: 'Orbitron', sans-serif;">
+					{String(heading).padStart(3, '0')}°
+				</p>
+				<p class="text-[10px] mt-1" style="color: var(--av-amber-dim);">{headingLetter}</p>
+			</div>
+
+			<!-- Airspeed -->
+			<div class="instrument-panel p-5 text-center">
+				<p class="text-[10px] tracking-widest uppercase mb-2" style="color: var(--av-amber-dim);">airspeed</p>
+				<p class="text-3xl font-bold tabular-nums" style="color: var(--av-green); font-family: 'Orbitron', sans-serif;">
+					{airspeed}
+				</p>
+				<p class="text-[10px] mt-1" style="color: var(--av-green-dim);">KIAS</p>
 			</div>
 		</div>
 
-		<!-- Click counter -->
-		<div class="mt-16 text-center {mounted ? 'opacity-100' : 'opacity-0'} transition-all duration-1000 delay-500">
-			<button
-				onclick={handleClick}
-				class="group relative px-8 py-3 font-mono text-sm border border-neon-green/30 rounded-lg
-					   text-neon-green hover:bg-neon-green/10 hover:border-neon-green/60
-					   transition-all duration-200 active:scale-95 cursor-pointer"
-			>
-				<span class="relative z-10">clicks: {clickCount}</span>
-				<div class="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-					style="box-shadow: 0 0 20px rgba(57,255,20,0.15), inset 0 0 20px rgba(57,255,20,0.05);">
-				</div>
-			</button>
-			{#if clickMessage}
-				<p class="mt-3 text-xs font-mono text-gray-500 animate-[pulse-glow_2s_ease-in-out_infinite]">{clickMessage}</p>
-			{/if}
-		</div>
+		<!-- Radar + Flight log -->
+		<div class="grid md:grid-cols-2 gap-4 mb-12" style="animation: altitude-rise 1.4s ease-out;">
 
-		<!-- Nav links -->
-		<nav class="mt-16 flex flex-wrap justify-center gap-4 {mounted ? 'opacity-100' : 'opacity-0'} transition-all duration-1000 delay-700">
-			<a href="/games" class="font-mono text-sm text-gray-400 hover:text-neon-yellow border-b border-transparent hover:border-neon-yellow/50 pb-0.5 transition-all duration-200">
-				/games
-			</a>
-			<a href="/projects" class="font-mono text-sm text-gray-400 hover:text-neon-green border-b border-transparent hover:border-neon-green/50 pb-0.5 transition-all duration-200">
-				/projects
-			</a>
-			<a href="/about" class="font-mono text-sm text-gray-400 hover:text-neon-blue border-b border-transparent hover:border-neon-blue/50 pb-0.5 transition-all duration-200">
-				/about
-			</a>
-			<a href="/lab" class="font-mono text-sm text-gray-400 hover:text-neon-pink border-b border-transparent hover:border-neon-pink/50 pb-0.5 transition-all duration-200">
-				/lab
-			</a>
-			<a href="/v2" class="font-mono text-sm text-gray-500 hover:text-amber-400 border-b border-transparent hover:border-amber-400/50 pb-0.5 transition-all duration-200">
-				✈️ /v2 — pilot edition
-			</a>
-		</nav>
-
-		<!-- Konami secret -->
-		{#if showSecret}
-			<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
-				role="dialog">
-				<div class="text-center space-y-4 animate-[float_3s_ease-in-out_infinite]">
-					<p class="text-6xl">🎮</p>
-					<p class="font-mono text-neon-green glow-green text-2xl">KONAMI CODE ACTIVATED</p>
-					<p class="font-mono text-gray-400 text-sm">you found the secret. respect.</p>
-					<button onclick={() => showSecret = false}
-						class="mt-4 font-mono text-xs text-gray-600 hover:text-neon-green transition-colors cursor-pointer">
-						[close]
-					</button>
+			<!-- Mini Radar -->
+			<div class="instrument-panel p-6 flex flex-col items-center justify-center">
+				<p class="text-[10px] tracking-widest uppercase mb-4" style="color: var(--av-amber-dim);">radar</p>
+				<div class="relative w-32 h-32">
+					<div class="absolute inset-0 rounded-full border opacity-20" style="border-color: var(--av-green);"></div>
+					<div class="absolute inset-4 rounded-full border opacity-15" style="border-color: var(--av-green);"></div>
+					<div class="absolute inset-8 rounded-full border opacity-10" style="border-color: var(--av-green);"></div>
+					<div class="absolute top-0 bottom-0 left-1/2 w-px opacity-10" style="background: var(--av-green);"></div>
+					<div class="absolute left-0 right-0 top-1/2 h-px opacity-10" style="background: var(--av-green);"></div>
+					<div class="absolute inset-0 rounded-full"
+						style="background: conic-gradient(from {radarAngle}deg, transparent 0deg, rgba(0, 255, 136, 0.15) 30deg, transparent 60deg);"></div>
+					<div class="absolute top-1/2 left-1/2 w-2 h-2 rounded-full -translate-x-1/2 -translate-y-1/2"
+						style="background: var(--av-green); box-shadow: 0 0 8px var(--av-green);"></div>
+					<div class="absolute w-1.5 h-1.5 rounded-full" style="top: 25%; left: 60%; background: var(--av-amber); box-shadow: 0 0 6px var(--av-amber); animation: blink-slow 2s infinite;"></div>
+					<div class="absolute w-1 h-1 rounded-full" style="top: 65%; left: 30%; background: var(--av-amber); box-shadow: 0 0 4px var(--av-amber); animation: blink-slow 3s infinite 1s;"></div>
 				</div>
 			</div>
-		{/if}
+
+			<!-- Flight Log / Terminal -->
+			<div class="instrument-panel p-6">
+				<p class="text-[10px] tracking-widest uppercase mb-4" style="color: var(--av-amber-dim);">flight log</p>
+				<div class="space-y-2 text-xs" style="color: var(--av-green);">
+					<p><span style="color: var(--av-amber-dim);">[SYS]</span> pilot profile loaded</p>
+					<p><span style="color: var(--av-amber-dim);">[NAV]</span> heading locked — 270°W</p>
+					<p><span style="color: var(--av-amber-dim);">[ALT]</span> climbing to FL350</p>
+					<p><span style="color: var(--av-amber-dim);">[COM]</span> "this is jackson, ready to fly"</p>
+					<p style="color: var(--av-amber); animation: blink-slow 1.5s infinite;">▸ CLEAR FOR TAKEOFF _</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Navigation strip -->
+		<div class="instrument-panel p-4" style="animation: altitude-rise 1.6s ease-out;">
+			<p class="text-[10px] tracking-widest uppercase mb-4 text-center" style="color: var(--av-amber-dim);">navigation</p>
+			<div class="flex justify-center gap-3 flex-wrap">
+				{#each [
+					{ href: '/about', label: 'ABOUT', icon: '📋' },
+					{ href: '/projects', label: 'PROJECTS', icon: '🛠' },
+					{ href: '/hangar', label: 'HANGAR', icon: '🏗' },
+					{ href: '/games', label: 'GAMES', icon: '🎮' },
+				] as nav}
+					<a href={nav.href}
+						class="text-xs px-4 py-2 rounded transition-all duration-200 hover:scale-105"
+						style="border: 1px solid var(--av-panel-border); color: var(--av-amber);
+							   background: var(--av-instrument);"
+						onmouseenter={(e) => { e.currentTarget.style.borderColor = 'var(--av-amber)'; e.currentTarget.style.boxShadow = '0 0 12px rgba(255,176,0,0.2)'; }}
+						onmouseleave={(e) => { e.currentTarget.style.borderColor = 'var(--av-panel-border)'; e.currentTarget.style.boxShadow = 'none'; }}>
+						{nav.icon} {nav.label}
+					</a>
+				{/each}
+			</div>
+		</div>
 
 		<!-- Footer -->
-		<footer class="mt-auto pt-20 pb-8 text-center {mounted ? 'opacity-100' : 'opacity-0'} transition-all duration-1000 delay-1000">
-			<p class="font-mono text-xs text-gray-700">
-				© {new Date().getFullYear()} jackson mathis
-			</p>
-		</footer>
+		<div class="text-center mt-16 text-xs opacity-30" style="color: var(--av-amber-dim);">
+			© 2026 jackson mathis
+		</div>
+
 	</main>
 </div>

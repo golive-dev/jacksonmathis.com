@@ -1,47 +1,71 @@
 <script lang="ts">
 	const projects = [
 		{
-			name: 'This Website',
-			desc: 'My first real web project. Built with SvelteKit + Tailwind.',
-			tech: ['Svelte', 'TypeScript', 'CSS'],
-			status: 'live',
-			emoji: '🌐',
+			name: 'jacksonmathis.com',
+			desc: 'My personal website. Aviation-themed cockpit interface.',
+			tech: ['SvelteKit', 'TypeScript', 'Tailwind'],
+			status: 'OPERATIONAL',
+			callsign: 'ALPHA-1',
 		},
 		{
-			name: 'Coming Soon',
-			desc: 'More projects loading... check back.',
+			name: 'Night Flight',
+			desc: 'Canvas-based flight game. Dodge mountains, fly through the night.',
+			tech: ['Canvas', 'Physics', 'JavaScript'],
+			status: 'OPERATIONAL',
+			callsign: 'BRAVO-2',
+		},
+		{
+			name: 'Field Goal Kicker',
+			desc: 'Physics football game with wind, angle, and power mechanics.',
+			tech: ['Canvas', 'Physics', 'JavaScript'],
+			status: 'OPERATIONAL',
+			callsign: 'CHARLIE-3',
+		},
+		{
+			name: 'More Incoming',
+			desc: 'New missions being planned. Check back for updates.',
 			tech: ['???'],
-			status: 'wip',
-			emoji: '🔧',
+			status: 'PENDING',
+			callsign: 'DELTA-4',
 		},
 	];
 </script>
 
-<div class="min-h-screen px-6 py-20 max-w-2xl mx-auto">
-	<a href="/" class="font-mono text-xs text-gray-600 hover:text-neon-green transition-colors">← back</a>
+<div class="min-h-screen px-6 py-16 max-w-3xl mx-auto">
+	<a href="/" class="text-xs transition-colors duration-200" style="color: var(--av-amber-dim);"
+		onmouseenter={(e) => e.currentTarget.style.color = 'var(--av-amber)'}
+		onmouseleave={(e) => e.currentTarget.style.color = 'var(--av-amber-dim)'}>
+		← RETURN TO COCKPIT
+	</a>
 
-	<h1 class="font-[family-name:var(--font-family-display)] text-4xl md:text-5xl font-bold mt-8 mb-2">
-		<span class="text-neon-blue glow-blue">/projects</span>
+	<h1 class="text-4xl md:text-5xl font-bold mt-8 mb-2" style="font-family: 'Orbitron', sans-serif;">
+		<span class="glow-amber" style="color: var(--av-amber);">FLIGHT LOG</span>
 	</h1>
-	<p class="text-gray-500 font-mono text-sm mb-12">things i've built or am building</p>
+	<p class="text-xs mb-12" style="color: var(--av-amber-dim);">COMPLETED AND ACTIVE MISSIONS</p>
 
-	<div class="space-y-6">
+	<div class="space-y-4">
 		{#each projects as project}
-			<div class="group bg-dark-card border border-dark-border rounded-lg p-6 hover:border-neon-blue/30 transition-all duration-300">
-				<div class="flex items-start justify-between">
+			<div class="instrument-panel p-5 transition-all duration-200"
+				onmouseenter={(e) => e.currentTarget.style.borderColor = 'var(--av-amber)'}
+				onmouseleave={(e) => e.currentTarget.style.borderColor = 'var(--av-panel-border)'}>
+				<div class="flex items-start justify-between mb-3">
 					<div>
-						<h2 class="text-lg font-bold text-white group-hover:text-neon-blue transition-colors">
-							{project.emoji} {project.name}
-						</h2>
-						<p class="text-gray-400 text-sm mt-1">{project.desc}</p>
+						<p class="text-[10px] tracking-widest" style="color: var(--av-amber-dim);">{project.callsign}</p>
+						<h2 class="text-lg font-bold mt-1" style="color: var(--av-white);">{project.name}</h2>
 					</div>
-					<span class="font-mono text-xs px-2 py-0.5 rounded-full {project.status === 'live' ? 'text-neon-green border border-neon-green/30' : 'text-yellow-500 border border-yellow-500/30'}">
+					<span class="text-[10px] px-2 py-0.5 rounded"
+						style="border: 1px solid {project.status === 'OPERATIONAL' ? 'var(--av-green-dim)' : 'var(--av-amber-dim)'};
+							   color: {project.status === 'OPERATIONAL' ? 'var(--av-green)' : 'var(--av-amber-dim)'};">
 						{project.status}
 					</span>
 				</div>
-				<div class="flex gap-2 mt-4">
+				<p class="text-xs mb-3" style="color: var(--av-white); opacity: 0.5;">{project.desc}</p>
+				<div class="flex gap-2">
 					{#each project.tech as t}
-						<span class="font-mono text-xs text-gray-500 bg-dark border border-dark-border rounded px-2 py-0.5">{t}</span>
+						<span class="text-[10px] px-2 py-0.5 rounded"
+							style="border: 1px solid var(--av-panel-border); color: var(--av-amber-dim);">
+							{t}
+						</span>
 					{/each}
 				</div>
 			</div>
