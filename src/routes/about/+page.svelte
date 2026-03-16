@@ -86,7 +86,7 @@
 		<p class="text-[10px] tracking-widest uppercase mb-4" style="color: var(--av-amber-dim);">▸ specializations</p>
 		<div class="flex flex-wrap gap-2">
 			{#each interests as interest}
-				<span class="text-xs px-3 py-1.5 rounded-full transition-all duration-200"
+				<span role="presentation" class="text-xs px-3 py-1.5 rounded-full transition-all duration-200"
 					style="border: 1px solid var(--av-panel-border); color: var(--av-amber-dim);"
 					onmouseenter={(e) => { e.currentTarget.style.borderColor = 'var(--av-amber)'; e.currentTarget.style.color = 'var(--av-amber)'; }}
 					onmouseleave={(e) => { e.currentTarget.style.borderColor = 'var(--av-panel-border)'; e.currentTarget.style.color = 'var(--av-amber-dim)'; }}>

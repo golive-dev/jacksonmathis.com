@@ -45,7 +45,7 @@
 
 	<div class="space-y-4">
 		{#each projects as project}
-			<div class="instrument-panel p-5 transition-all duration-200"
+			<div role="presentation" class="instrument-panel p-5 transition-all duration-200"
 				onmouseenter={(e) => e.currentTarget.style.borderColor = 'var(--av-amber)'}
 				onmouseleave={(e) => e.currentTarget.style.borderColor = 'var(--av-panel-border)'}>
 				<div class="flex items-start justify-between mb-3">

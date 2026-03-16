@@ -22,6 +22,7 @@
 		{ name: 'P-51 Mustang', type: 'WWII Fighter', speed: '383 kts', ceiling: '41,900 ft', icon: '⭐', fact: 'Changed the course of WWII by escorting bombers to Berlin.' },
 	];
 	let selectedPlane = $state(0);
+	const plane = $derived(aircraft[selectedPlane]);
 
 	// === NATO Alphabet ===
 	let natoInput = $state('JACKSON');
@@ -82,7 +83,6 @@
 				</button>
 			{/each}
 		</div>
-		{@const plane = aircraft[selectedPlane]}
 		<div class="grid grid-cols-3 gap-4 mb-3">
 			<div>
 				<p class="text-[10px] tracking-widest" style="color: var(--av-amber-dim);">TYPE</p>
