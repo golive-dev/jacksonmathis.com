@@ -145,6 +145,9 @@
 			<a href="/lab" class="font-mono text-sm text-gray-400 hover:text-neon-pink border-b border-transparent hover:border-neon-pink/50 pb-0.5 transition-all duration-200">
 				/lab
 			</a>
+			<a href="/v2" class="font-mono text-sm text-gray-500 hover:text-amber-400 border-b border-transparent hover:border-amber-400/50 pb-0.5 transition-all duration-200">
+				✈️ /v2 — pilot edition
+			</a>
 		</nav>
 
 		<!-- Konami secret -->
